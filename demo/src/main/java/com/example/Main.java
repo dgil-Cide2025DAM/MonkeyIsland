@@ -36,7 +36,7 @@ public class Main {
         int puntuacion = 0;
         int vidas = 3;
         int rondasMaximas = insultosPiratas.length;
-        boolean salir = false;
+        boolean salirBucle = false;
 
         // respuestasInsultos y respuestasPiratas tienen el mismo indice correcto. Los
         // insultosPiratas son random cada ronda,
@@ -45,27 +45,28 @@ public class Main {
         Scanner sc = new Scanner(System.in);
 
         System.out.println("----------------------- ╬ MONKEY ISLAND ╬ --------------------");
+        System.out.println();
+        System.out.println("\n\n Ø ¡Bienvenido Aventurero! Ø\n\n ¤ El juego consiste en sobrevivir a los insultos de los piratas. \n Responde correctamente para ganar puntos y avanzar de ronda. \n Unicamente podrás elegir entre cuatro opciones (una única correcta y tres incorrectas). \n Pero cuidado, si fallas perderás vidas y puntos. ¤ \n\n æ Para salir, escribe 'n' al momento de poner una respuesta al insulto del pirata. æ \n\n £ Si te quedas sin vidas, solo te esperará la muerte, piratilla! £ \n\n ▓ ¡Buena suerte! ▓ ");
 
-        System.out.println("\n\n Ø ¡Bienvenido Aventurero! Ø\n\n ¤ El juego consiste en sobrevivir a los insultos de los piratas. \n Responde correctamente para ganar puntos y avanzar de ronda. \n Unicamente podrás elegir entre cuatro opciones (una única correcta y tres incorrectas). \n Pero cuidado, si fallas perderás vidas y puntos. ¤ \n\n £ Si te quedas sin vidas, solo te esperará la muerte, piratilla! £ \n\n ▓ ¡Buena suerte! ▓ ");
-
-        // Para evitar repetir insultos en la misma ronda
+        // Para evitar repetir insultos en la misma ronda (apartado do - while)
         boolean[] insultosUsados = new boolean[insultosPiratas.length];
         int rondasJuegoJugadas = 0;
 
         System.out.println(" ® ¿Cuantas rondas quieres jugar? ® ");
         int rondasJuegoUsuario = sc.nextInt();
+
         if (rondasJuegoUsuario > rondasMaximas) {
             rondasJuegoUsuario = rondasMaximas;
             System.out.println(" Ø Has seleccionado más rondas de las disponibles. El juego se ajustará a " + rondasMaximas + " rondas. Ø ");
         }
 
-        while (rondasJuegoJugadas < rondasJuegoUsuario || rondasMaximas < rondasJuegoUsuario) { // Mientras no se hayan jugado todas las rondas
+        while (rondasJuegoJugadas < rondasJuegoUsuario || rondasMaximas < rondasJuegoUsuario && !salirBucle) { // Mientras no se hayan jugado todas las rondas
             rondasJuegoJugadas++; // Aumentamos las rondas jugadas
-            System.out.println(" ® Has avanzado a la ronda ® " + rondasJuegoJugadas + "\n\n ¤ Vidas: ¤ " + vidas
-                    + "\n ¤ Puntuación: ¤ " + puntuacion);
+            System.out.println(" ® Has avanzado a la ronda ® " + rondasJuegoJugadas + "\n\n ¤ Vidas: ¤ " + vidas + "\n ¤ Puntuación: ¤ " + puntuacion);
 
             int insultoAleatorioNoUsado;
-            do {
+            do { // Bucle para asegurarnos de que el insulto no se ha usado ya (no se repite en
+                 // la misma ronda)
                 insultoAleatorioNoUsado = random.nextInt(insultosPiratas.length);
             } while (insultosUsados[insultoAleatorioNoUsado]);
             insultosUsados[insultoAleatorioNoUsado] = true;
@@ -85,14 +86,15 @@ public class Main {
                     for (int j = 0; j < i; j++) {
                         if (opciones[j].equals(respuestasInsultosIncorrectas[insulto])) {
                             repetido = true;
-                            return;
+                            break;
                         }
                     }
                 } while (repetido);
                 opciones[i] = respuestasInsultosIncorrectas[insulto];
             }
 
-            // Mezclamos las opciones
+            // Mezclamos las opciones (yo lo llamo reloj, ya que se van intercambiando
+            // valores)
             for (int i = 0; i < opciones.length; i++) {
                 int j = random.nextInt(opciones.length);
                 String temp = opciones[i];
@@ -101,8 +103,7 @@ public class Main {
             }
 
             // Preguntamos la respuesta al usuario
-            System.out.println(
-                    " ¤ Recuerda: Solo una respuesta es correcta. ¤ \n\n ╬ Elige tu respuesta entre estas cuatro: ╬ ");
+            System.out.println(" ¤ Recuerda: Solo una respuesta es correcta. ¤ \n\n ╬ Elige tu respuesta entre estas cuatro: ╬ ");
 
             // Mostramos las respuestas (1 correcta y 2 incorrectas).
             for (int i = 0; i < opciones.length; i++) {
@@ -116,43 +117,43 @@ public class Main {
             // Guardamos la respuesta del usuario
             int respuestaUsuario = sc.nextInt();
             
-
             
-            // BUCLE DE COMPROBACIÓN DE LA RESPUESTA
-
-            if (opciones[respuestaUsuario - 1].equals(respuestasInsultos[insultoAleatorioNoUsado])) {
-                System.out.println("\n\n ® Acertaste! ¡Bien hecho, piratilla! ® \n");
-                if (vidas == 3) {
-                    vidas = vidas + 0;
-                }
-                puntuacion = puntuacion + 3;
-            } else {
-                System.out.println("\n\n Ø Has fallado! La respuesta correcta era: Ø "
-                        + respuestasInsultos[insultoAleatorioNoUsado] + "\n");
-                vidas = vidas - 1;
-                puntuacion = puntuacion - 2;
-                if (vidas == 0) {
-                    System.out.println(" ☠ Has perdido todas tus vidas, piratilla! ☠ \n\n ¤ Tu puntuación final es: ¤ "
-                            + puntuacion + "\n\n ▓ ¡GAME OVER! ▓ ");
-                    return;
-                }
-                else if (puntuacion < 0) {
-                    System.out.println(" ☠ Te has quedado sin puntos, piratilla! ☠ \n\n ¤ Tu puntuación final es: ¤ "
-                            + puntuacion + "\n\n ▓ ¡GAME OVER! ▓ ");
-                    return;
-                }
+            switch (respuestaUsuario) {
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                    if (opciones[respuestaUsuario - 1].equals(respuestasInsultos[insultoAleatorioNoUsado])) {
+                        System.out.println("\n\n ® Acertaste! ¡Bien hecho, piratilla! ® \n");
+                        if (vidas == 3) {
+                            vidas = vidas + 0;
+                        }
+                        puntuacion = puntuacion + 3;
+                    } else {
+                        System.out.println("\n\n Ø Has fallado! La respuesta correcta era: Ø " + respuestasInsultos[insultoAleatorioNoUsado] + "\n");
+                        vidas = vidas - 1;
+                        puntuacion = puntuacion - 2;
+                        System.out.println("Te quedan: " + vidas + " vidas." );
+                        if (vidas == 0) {
+                            System.out.println(" ☠ Has perdido todas tus vidas, piratilla! ☠ \n\n ¤ Tu puntuación final es: ¤ " + puntuacion + "\n\n ▓ ¡GAME OVER! ▓ ");
+                        }
+                    }
+                    System.out.println(" ----------------------------------------------------- ");
+                    break;
+                case 5: // Salir
+                    System.out.println("\n\n ¤ Has decidido salir del juego. ¤ \n\n ▓ ¡Hasta la próxima, piratilla! ▓ ");
+                    System.out.println(" ¤ Tu puntuación final es: ¤ " + puntuacion + "\n"  + " vidas restantes: ¤ " + vidas);
+                    salirBucle = true;
+                    break;                  
             }
         }
         if (puntuacion == 27) {
             System.out.print("\n\n ¤ ¡Felicidades, eres el dios de los piratas! ¤ \n\n");
-        }
-        else if (puntuacion >= 20 && puntuacion < 27) {
+        } else if (puntuacion >= 20 && puntuacion < 27) {
             System.out.print("\n\n ¤ ¡Eres un rey pirata! Casi perfecto. ¤ \n\n");
-        }
-        else if (puntuacion >= 15 && puntuacion < 20) {
+        } else if (puntuacion >= 15 && puntuacion < 20) {
             System.out.print("\n\n ¤ ¡Buen trabajo, piratilla! Pero aún te queda mucho por aprender. ¤ \n\n");
-        }
-        else {
+        } else {
             System.out.print("\n\n ¤ ¡Los loros se rien de ti! ¡Sigue practicando! ¤ \n\n");
 
         }
