@@ -46,7 +46,7 @@ public class Main {
 
         System.out.println("----------------------- ╬ MONKEY ISLAND ╬ --------------------");
         System.out.println();
-        System.out.println("\n\n Ø ¡Bienvenido Aventurero! Ø\n\n ¤ El juego consiste en sobrevivir a los insultos de los piratas. \n Responde correctamente para ganar puntos y avanzar de ronda. \n Unicamente podrás elegir entre cuatro opciones (una única correcta y tres incorrectas). \n Pero cuidado, si fallas perderás vidas y puntos. ¤ \n\n æ Para salir, escribe 'n' al momento de poner una respuesta al insulto del pirata. æ \n\n £ Si te quedas sin vidas, solo te esperará la muerte, piratilla! £ \n\n ▓ ¡Buena suerte! ▓ ");
+        System.out.println("\n\n Ø ¡Bienvenido Aventurero! Ø\n\n ¤ El juego consiste en sobrevivir a los insultos de los piratas. \n Responde correctamente para ganar puntos y avanzar de ronda. \n Unicamente podrás elegir entre cuatro opciones (una única correcta y tres incorrectas). \n Pero cuidado, si fallas perderás vidas y puntos. ¤ \n\n æ Para salir, escribe '5' al momento de poner una respuesta al insulto del pirata. æ \n\n £ Si te quedas sin vidas, solo te esperará la muerte, piratilla! £ \n\n ▓ ¡Buena suerte! ▓ ");
 
         // Para evitar repetir insultos en la misma ronda (apartado do - while)
         boolean[] insultosUsados = new boolean[insultosPiratas.length];
